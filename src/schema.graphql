@@ -1,0 +1,25 @@
+type InventoryItem {
+  id: ID!
+  name: String!
+  category: String
+  price: Float
+}
+
+type Mutation {
+  addItemToShoppingList(inventoryItemID: ID!, quantity: Int!): ShoppingItem
+  updateItemFromShoppingList(shoppingItemID: ID!, quantity: Int!): ShoppingItem
+  deleteItemFromShoppingList(shoppingItemID: ID!): Boolean
+}
+
+type Query {
+  shoppingItems: [ShoppingItem!]
+  availableItems: [InventoryItem!]
+}
+
+type ShoppingItem {
+  id: ID!
+  inventoryItem: InventoryItem!
+  quantity: Int
+  totalPrice: Float
+}
+
