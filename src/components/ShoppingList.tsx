@@ -1,20 +1,10 @@
 import { Link } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import { graphql, useLazyLoadQuery, useMutation } from "react-relay";
+import { graphql, GraphQLTaggedNode, PreloadedQuery, useMutation, usePreloadedQuery, UseQueryLoaderLoadQueryOptions, useSubscribeToInvalidationState } from "react-relay";
 import ShoppingListItem from "../components/ShoppingListItem";
 import { Palette } from "../constants";
 import { currencyFormatter } from "../utils";
-import { ShoppingListQuery as ShoppingListQueryType } from "./__generated__/ShoppingListQuery.graphql";
-
-const ShoppingListQuery = graphql`
-  query ShoppingListQuery {
-    shoppingItems {
-      id
-      totalPrice
-      ...ShoppingListItemFragment
-    }
-  }
-`;
+import { ShoppingListViewQuery$variables, ShoppingListViewQuery as ShoppingListViewQueryType } from "../views/__generated__/ShoppingListViewQuery.graphql";
 
 const ShoppingListDeleteItemFromShoppingListMutation = graphql`
   mutation ShoppingListDeleteItemFromShoppingListMutation(
@@ -76,8 +66,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function ShoppingList() {
-  const data = useLazyLoadQuery<ShoppingListQueryType>(ShoppingListQuery, {});
+interface ShoppingListProps {
+    queryRef: PreloadedQuery<ShoppingListViewQueryType>,
+    loadQuery: (variables: ShoppingListViewQuery$variables, options?: UseQueryLoaderLoadQueryOptions) => void,
+    query: GraphQLTaggedNode
+};
+
+export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListProps) {
+  const shoppingListQueryRef = queryRef as PreloadedQuery<ShoppingListViewQueryType>
+
+  const data = usePreloadedQuery<ShoppingListViewQueryType>(query, shoppingListQueryRef);
+
   const [commitUpdateMutation, isUpdateMutationInFlight] = useMutation(
     ShoppingListUpdateItemFromShoppingListMutation
   );
@@ -87,6 +86,12 @@ export default function ShoppingList() {
   );
 
   const { shoppingItems } = data;
+
+  useSubscribeToInvalidationState(shoppingItems?.map(item => item.id) ?? [], () => {
+    loadQuery({}, {
+        fetchPolicy: 'store-and-network'
+    });
+  });
 
   if (!shoppingItems) {
     return (

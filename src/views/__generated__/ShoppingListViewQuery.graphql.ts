@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0839acff119c0e3ed781433fd3c2da2e>>
+ * @generated SignedSource<<b8ec033580af3269956dc4cf3a0aa214>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,17 +10,17 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type ShoppingListQuery$variables = Record<PropertyKey, never>;
-export type ShoppingListQuery$data = {
+export type ShoppingListViewQuery$variables = Record<PropertyKey, never>;
+export type ShoppingListViewQuery$data = {
   readonly shoppingItems: ReadonlyArray<{
     readonly id: string;
     readonly totalPrice: number | null | undefined;
     readonly " $fragmentSpreads": FragmentRefs<"ShoppingListItemFragment">;
   }> | null | undefined;
 };
-export type ShoppingListQuery = {
-  response: ShoppingListQuery$data;
-  variables: ShoppingListQuery$variables;
+export type ShoppingListViewQuery = {
+  response: ShoppingListViewQuery$data;
+  variables: ShoppingListViewQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -43,7 +43,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "ShoppingListQuery",
+    "name": "ShoppingListViewQuery",
     "selections": [
       {
         "alias": null,
@@ -71,7 +71,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "ShoppingListQuery",
+    "name": "ShoppingListViewQuery",
     "selections": [
       {
         "alias": null,
@@ -115,16 +115,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e4826bced2ecc7d6d2c8710a75b69f70",
+    "cacheID": "4ffd25de9882b0d84366656b5dd69991",
     "id": null,
     "metadata": {},
-    "name": "ShoppingListQuery",
+    "name": "ShoppingListViewQuery",
     "operationKind": "query",
-    "text": "query ShoppingListQuery {\n  shoppingItems {\n    id\n    totalPrice\n    ...ShoppingListItemFragment\n  }\n}\n\nfragment ShoppingListItemFragment on ShoppingItem {\n  id\n  inventoryItem {\n    id\n    name\n  }\n  quantity\n  totalPrice\n}\n"
+    "text": "query ShoppingListViewQuery {\n  shoppingItems {\n    id\n    totalPrice\n    ...ShoppingListItemFragment\n  }\n}\n\nfragment ShoppingListItemFragment on ShoppingItem {\n  id\n  inventoryItem {\n    id\n    name\n  }\n  quantity\n  totalPrice\n}\n"
   }
 };
 })();
 
-(node as any).hash = "a8f231ae3e0076c1b003484fbf2f5454";
+(node as any).hash = "aa89c0f25c36fc2869da9879b2ee3546";
 
 export default node;
