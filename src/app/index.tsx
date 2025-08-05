@@ -1,8 +1,8 @@
-import ShoppingList from "../views/ShoppingList";
+import ShoppingListView from "../views/ShoppingListView";
 
 
 export default function Index() {
   return (
-    <ShoppingList />
+    <ShoppingListView />
   );
 }
