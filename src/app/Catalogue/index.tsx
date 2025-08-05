@@ -76,6 +76,9 @@ export default function Catalogue() {
         inventoryItemID: selectedId,
         quantity: quantity,
       },
+      updater: (store) => {
+        store.invalidateStore();
+      },
       onCompleted: () => {
         if (router.canGoBack()) {
           router.dismissAll();
