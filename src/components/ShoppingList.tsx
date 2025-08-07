@@ -113,6 +113,12 @@ export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListP
       variables: {
         shoppingItemID: id,
       },
+      updater: (store) => {
+        const item = store.get(id);
+        if (item) {
+          item.invalidateRecord();
+        }
+      }
     });
   }
 
@@ -121,7 +127,7 @@ export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListP
       variables: {
         shoppingItemID: id,
         quantity: quantity,
-      },
+      }
     });
   }
 
