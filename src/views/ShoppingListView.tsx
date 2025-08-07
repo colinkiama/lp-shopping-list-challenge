@@ -12,6 +12,10 @@ const ShoppingListViewQuery = graphql`
     shoppingItems {
       id
       totalPrice
+      inventoryItem {
+        id
+        name
+      }
       ...ShoppingListItemFragment
     }
   }

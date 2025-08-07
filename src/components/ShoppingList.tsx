@@ -5,6 +5,8 @@ import ShoppingListItem from "../components/ShoppingListItem";
 import { Palette } from "../constants";
 import { currencyFormatter } from "../utils";
 import { ShoppingListViewQuery$variables, ShoppingListViewQuery as ShoppingListViewQueryType } from "../views/__generated__/ShoppingListViewQuery.graphql";
+import { useContext, useEffect } from "react";
+import { UsedInventoryItemsContext } from "../context/UsedInventoryItemsContext";
 
 const ShoppingListDeleteItemFromShoppingListMutation = graphql`
   mutation ShoppingListDeleteItemFromShoppingListMutation(
@@ -86,12 +88,22 @@ export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListP
   );
 
   const { shoppingItems } = data;
-
+  const { updateUsedItemIds, usedItemIds } = useContext(UsedInventoryItemsContext);
+  
+  
   useSubscribeToInvalidationState(shoppingItems?.map(item => item.id) ?? [], () => {
     loadQuery({}, {
-        fetchPolicy: 'store-and-network'
+      fetchPolicy: 'store-and-network',
     });
   });
+  
+  useEffect(() => {
+    const inventoryItemIds = shoppingItems?.map(item => item.inventoryItem.id) ?? [];
+    const areUsedIdsUpToDate = inventoryItemIds.length === usedItemIds.length && inventoryItemIds.every((item, index) => item === usedItemIds[index]);
+    if (!areUsedIdsUpToDate) {
+      updateUsedItemIds(inventoryItemIds);
+    }
+  }, [shoppingItems, updateUsedItemIds, usedItemIds])
 
   if (!shoppingItems) {
     return (
@@ -100,6 +112,7 @@ export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListP
       </View>
     );
   }
+
 
   const totalPrice: number = shoppingItems.reduce(
     (lastValue, current) => lastValue + (current.totalPrice ?? 0),

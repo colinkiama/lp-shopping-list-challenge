@@ -1,11 +1,12 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useLazyLoadQuery, useMutation } from "react-relay";
 import { graphql } from "relay-runtime";
 import CatalogueItem from "../../components/CatalogueItem";
 import CatalogueQuantityPicker from "../../components/CatalogueQuantityPicker";
 import { CatalogueQuery as CatalogueQueryType } from "./__generated__/CatalogueQuery.graphql";
+import { UsedInventoryItemsContext } from "@/src/context/UsedInventoryItemsContext";
 
 const CatalogueQuery = graphql`
   query CatalogueQuery {
@@ -55,12 +56,25 @@ const styles = StyleSheet.create({
 });
 
 export default function Catalogue() {
-  const data = useLazyLoadQuery<CatalogueQueryType>(CatalogueQuery, {});
+  const data = useLazyLoadQuery<CatalogueQueryType>(CatalogueQuery, {}, {fetchPolicy: 'store-and-network'});
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [commitMutation, isMutationInFlight] = useMutation(
     CatalogueAddItemToShoppingListMutation
   );
+  
   const router = useRouter();
+  const { usedItemIds } = useContext(UsedInventoryItemsContext);
+
+  const availableItems = data.availableItems;
+
+  if (!availableItems) {
+    return <Text>No catalogue items available!</Text>;
+  }
+
+  const filteredItems = availableItems.filter((item) => !usedItemIds.includes(item.id));
+
+  const selectedItem = filteredItems.find((item) => item.id === selectedId);
+  const selectedItemPrice = selectedItem ? selectedItem?.price ?? 0 : 0;
 
   function onSelect(nextId: string) {
     setSelectedId(nextId);
@@ -89,21 +103,12 @@ export default function Catalogue() {
     });
   }
 
-  const availableItems = data.availableItems;
-
-  if (!availableItems) {
-    return <Text>No catalogue items available!</Text>;
-  }
-
-  const selectedItem = availableItems.find((item) => item.id === selectedId);
-  const selectedItemPrice = selectedItem ? selectedItem?.price ?? 0 : 0;
-
   return (
     <View style={styles.container}>
       <FlatList
         style={styles.list}
         contentContainerStyle={styles.listContentContainer}
-        data={availableItems}
+        data={filteredItems}
         ListEmptyComponent={(<Text>No catalogue items available!</Text>)}
         renderItem={(item) => (
           <CatalogueItem

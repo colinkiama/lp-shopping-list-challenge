@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b8ec033580af3269956dc4cf3a0aa214>>
+ * @generated SignedSource<<c33ab182715e9e032a0d2fbec0131973>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,6 +14,10 @@ export type ShoppingListViewQuery$variables = Record<PropertyKey, never>;
 export type ShoppingListViewQuery$data = {
   readonly shoppingItems: ReadonlyArray<{
     readonly id: string;
+    readonly inventoryItem: {
+      readonly id: string;
+      readonly name: string;
+    };
     readonly totalPrice: number | null | undefined;
     readonly " $fragmentSpreads": FragmentRefs<"ShoppingListItemFragment">;
   }> | null | undefined;
@@ -37,6 +41,25 @@ v1 = {
   "kind": "ScalarField",
   "name": "totalPrice",
   "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "InventoryItem",
+  "kind": "LinkedField",
+  "name": "inventoryItem",
+  "plural": false,
+  "selections": [
+    (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "name",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -55,6 +78,7 @@ return {
         "selections": [
           (v0/*: any*/),
           (v1/*: any*/),
+          (v2/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -83,25 +107,7 @@ return {
         "selections": [
           (v0/*: any*/),
           (v1/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "InventoryItem",
-            "kind": "LinkedField",
-            "name": "inventoryItem",
-            "plural": false,
-            "selections": [
-              (v0/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "name",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -115,16 +121,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "4ffd25de9882b0d84366656b5dd69991",
+    "cacheID": "161305a76bd3aba7a3ce2d61d2a6b584",
     "id": null,
     "metadata": {},
     "name": "ShoppingListViewQuery",
     "operationKind": "query",
-    "text": "query ShoppingListViewQuery {\n  shoppingItems {\n    id\n    totalPrice\n    ...ShoppingListItemFragment\n  }\n}\n\nfragment ShoppingListItemFragment on ShoppingItem {\n  id\n  inventoryItem {\n    id\n    name\n  }\n  quantity\n  totalPrice\n}\n"
+    "text": "query ShoppingListViewQuery {\n  shoppingItems {\n    id\n    totalPrice\n    inventoryItem {\n      id\n      name\n    }\n    ...ShoppingListItemFragment\n  }\n}\n\nfragment ShoppingListItemFragment on ShoppingItem {\n  id\n  inventoryItem {\n    id\n    name\n  }\n  quantity\n  totalPrice\n}\n"
   }
 };
 })();
 
-(node as any).hash = "aa89c0f25c36fc2869da9879b2ee3546";
+(node as any).hash = "5d54517760b9ba342c8bb86dc894e698";
 
 export default node;

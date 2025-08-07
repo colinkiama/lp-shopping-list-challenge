@@ -1,7 +1,8 @@
 import { Stack } from "expo-router";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { RelayEnvironmentProvider } from "react-relay";
 import { Environment, FetchFunction, Network } from "relay-runtime";
+import { UsedInventoryItemsContext } from "../context/UsedInventoryItemsContext";
 
 const HTTP_ENDPOINT = "http://localhost:8000/";
 
@@ -21,9 +22,18 @@ const environment = new Environment({
   network: Network.create(fetchGraphQL),
 });
 
+
 export default function RootLayout() {
+  const [usedItemIds, setUsedItemIds] = useState<string[]>([]);
+
   return (
     <RelayEnvironmentProvider environment={environment}>
+      <UsedInventoryItemsContext value={{
+        updateUsedItemIds: (nextUsedItemIds) => {
+          setUsedItemIds(nextUsedItemIds);
+        },
+        usedItemIds: usedItemIds
+      }}>
       <Suspense fallback="Loading...">
         <Stack>
           <Stack.Screen
@@ -40,6 +50,7 @@ export default function RootLayout() {
           />
         </Stack>
       </Suspense>
+        </UsedInventoryItemsContext>
     </RelayEnvironmentProvider>
   );
 }
