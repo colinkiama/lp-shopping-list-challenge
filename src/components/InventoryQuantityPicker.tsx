@@ -10,7 +10,7 @@ interface InventoryQuantityPickerProps {
   disabled?: boolean;
   onAdd: (quantity: number) => void;
 }
-const pickerItems = Array.from({ length: 21 }, (value, index) => index);
+const pickerItems = Array.from({ length: 20 }, (value, index) => index + 1);
 
 export default function InventoryQuantityPicker({
   name,
@@ -18,7 +18,7 @@ export default function InventoryQuantityPicker({
   onAdd,
   disabled = false,
 }: InventoryQuantityPickerProps) {
-  const [quantity, setQuantity] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
   const subtotal = price * quantity;
   const formattedSubtotal = currencyFormatter.format(subtotal);
 

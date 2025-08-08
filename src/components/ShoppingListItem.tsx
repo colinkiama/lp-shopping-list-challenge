@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const pickerItems = Array.from({ length: 21 }, (_value, index) => index);
+const pickerItems = Array.from({ length: 20 }, (_value, index) => index + 1);
 
 export default function ShoppingListItem({
   item,
@@ -59,7 +59,7 @@ export default function ShoppingListItem({
 }: ShoppingListItemProps) {
   const data = useFragment(ShoppingListItemFragment, item);
   const { inventoryItem, totalPrice, quantity } = data;
-  const [selectedQuantity, setSelectedQuantity] = useState(quantity ?? 0);
+  const [selectedQuantity, setSelectedQuantity] = useState(quantity ?? 1);
   const formattedPrice = currencyFormatter.format(totalPrice ?? 0);
   const name = inventoryItem.name;
 
