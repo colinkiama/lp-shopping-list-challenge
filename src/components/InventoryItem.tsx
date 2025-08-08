@@ -24,19 +24,29 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     wordWrap: "wrap",
+    flex: 1,
+    flexDirection: 'row',
   },
   price: {
     fontWeight: 700,
   },
   container: {
-    minWidth: 300,
-    padding: 4,
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  subContainer: {
+    flex: 1,
+    maxWidth: 400,
+    backgroundColor: Palette.LIST_ITEM_BACKGROUND_COLOR,
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Palette.LIST_ITEM_BORDER_COLOR
   },
   containerSelected: {
     borderColor: Palette.ACCENT_COLOR,
-    borderWidth: 4,
+    borderWidth: 2,
     borderStyle: "solid",
-    borderRadius: 12,
   },
 });
 
@@ -48,17 +58,17 @@ export default function InventoryItem({
   const data = useFragment(InventoryItemFragment, item);
 
   const formattedPrice = currencyFormatter.format(data.price ?? 0);
-  const containerStyles = {
-    ...styles.container,
+  const subContainerStyle = {
+    ...styles.subContainer,
     ...(isSelected ? styles.containerSelected : {}),
   };
   return (
-    <Pressable onPress={() => onSelect(data.id)}>
-      <View style={containerStyles}>
-        <Text style={styles.name}>{data.name}</Text>
-        <Text style={styles.price}>{formattedPrice}</Text>
-        <Text>{data.category}</Text>
-      </View>
-    </Pressable>
+    <View style={styles.container}>
+      <Pressable style={subContainerStyle} onPress={() => onSelect(data.id)}>
+          <Text style={styles.name}>{data.name}</Text>
+          <Text style={styles.price}>{formattedPrice}</Text>
+          <Text>{data.category}</Text>
+      </Pressable>
+    </View>
   );
 }

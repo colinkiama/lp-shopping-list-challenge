@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   listContentContainer: {
     paddingTop: 12,
     paddingBottom: 20,
-    alignItems: "center",
+    paddingHorizontal: 4,
     gap: 12,
   },
 });
