@@ -56,11 +56,11 @@ const styles = StyleSheet.create({
     padding: 12,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: 'center'
+    alignItems: "center",
   },
   totalPrice: {
     fontWeight: 700,
-    fontSize: 20
+    fontSize: 20,
   },
   addButton: {
     fontWeight: 700,
