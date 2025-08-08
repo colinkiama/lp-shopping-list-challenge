@@ -20,7 +20,6 @@ import {
   ShoppingListViewQuery as ShoppingListViewQueryType,
 } from "../views/__generated__/ShoppingListViewQuery.graphql";
 
-
 const ShoppingListDeleteItemFromShoppingListMutation = graphql`
   mutation ShoppingListDeleteItemFromShoppingListMutation(
     $shoppingItemID: ID!
@@ -54,30 +53,28 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   top: {
-    paddingTop: 12,
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingBottom: 12,
+    padding: 12,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   totalPrice: {
     fontWeight: 700,
+    fontSize: 20,
   },
   addButton: {
     fontWeight: 700,
     backgroundColor: Palette.ACCENT_COLOR,
     color: Palette.BUTTON_FOREGROUND_COLOR,
-    paddingTop: 12,
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingBottom: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     borderRadius: 4,
   },
   listContentContainer: {
     paddingBottom: 20,
-    alignItems: "center",
+    paddingHorizontal: 4,
     gap: 12,
+    flex: 1,
   },
 });
 

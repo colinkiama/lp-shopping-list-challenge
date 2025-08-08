@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { graphql, useFragment } from "react-relay";
 import { currencyFormatter } from "../utils";
 import { ShoppingListItemFragment$key } from "./__generated__/ShoppingListItemFragment.graphql";
+import { Palette } from "../constants";
 
 const ShoppingListItemFragment = graphql`
   fragment ShoppingListItemFragment on ShoppingItem {
@@ -27,7 +28,17 @@ interface ShoppingListItemProps {
 
 const styles = StyleSheet.create({
   container: {
-    minWidth: 300,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  subContainer: {
+    flex: 1,
+    maxWidth: 400,
+    backgroundColor: Palette.LIST_ITEM_BACKGROUND_COLOR,
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Palette.LIST_ITEM_BORDER_COLOR,
   },
   top: { flex: 1, flexDirection: "row" },
   bottom: {
@@ -65,36 +76,41 @@ export default function ShoppingListItem({
 
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <View style={styles.nameContainer}>
-          <Text style={styles.name}>{name}</Text>
-        </View>
+      <View style={styles.subContainer}>
+        <View style={styles.top}>
+          <View style={styles.nameContainer}>
+            <Text style={styles.name}>{name}</Text>
+          </View>
 
-        <View>
-          <Picker
-            enabled={!pickerIsDisabled}
-            selectedValue={selectedQuantity}
-            onValueChange={(_itemValue, itemIndex) => {
-              const nextSelectedQuantity = pickerItems[itemIndex];
-              setSelectedQuantity(pickerItems[itemIndex]);
-              onUpdate(nextSelectedQuantity);
-            }}
-          >
-            {pickerItems.map((pickerValue) => (
-              <Picker.Item
-                key={pickerValue}
-                label={`${pickerValue}`}
-                value={pickerValue}
-              />
-            ))}
-          </Picker>
+          <View>
+            <Picker
+              enabled={!pickerIsDisabled}
+              selectedValue={selectedQuantity}
+              onValueChange={(_itemValue, itemIndex) => {
+                const nextSelectedQuantity = pickerItems[itemIndex];
+                setSelectedQuantity(pickerItems[itemIndex]);
+                onUpdate(nextSelectedQuantity);
+              }}
+            >
+              {pickerItems.map((pickerValue) => (
+                <Picker.Item
+                  key={pickerValue}
+                  label={`${pickerValue}`}
+                  value={pickerValue}
+                />
+              ))}
+            </Picker>
+          </View>
         </View>
-      </View>
-      <View style={styles.bottom}>
-        <Text>{formattedPrice}</Text>
-        <Pressable disabled={deleteButtonIsDisabled} onPress={() => onDelete()}>
-          <Text style={styles.deleteButton}>Delete</Text>
-        </Pressable>
+        <View style={styles.bottom}>
+          <Text>{formattedPrice}</Text>
+          <Pressable
+            disabled={deleteButtonIsDisabled}
+            onPress={() => onDelete()}
+          >
+            <Text style={styles.deleteButton}>Delete</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );

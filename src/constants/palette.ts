@@ -3,4 +3,6 @@ export const Palette = {
   BUTTON_FOREGROUND_COLOR: "#ffffff",
   BRIM_BORDER_COLOR: "#d8d8d8",
   BRIM_BACKGROUND_COLOR: "#ffffff",
+  LIST_ITEM_BACKGROUND_COLOR: '#ffffff',
+  LIST_ITEM_BORDER_COLOR: '#d8d8d8'
 };
