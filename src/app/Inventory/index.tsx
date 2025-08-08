@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
-import { useContext, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { Suspense, useContext, useState } from "react";
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
 import { useLazyLoadQuery, useMutation } from "react-relay";
 import { graphql } from "relay-runtime";
 import InventoryItem from "../../components/InventoryItem";
@@ -67,11 +67,7 @@ export default function Inventory() {
 
   const availableItems = data.availableItems;
 
-  if (!availableItems) {
-    return <Text>No Inventory items available!</Text>;
-  }
-
-  const filteredItems = availableItems.filter((item) => !usedItemIds.includes(item.id));
+  const filteredItems = availableItems?.filter((item) => !usedItemIds.includes(item.id)) ?? [];
 
   const selectedItem = filteredItems.find((item) => item.id === selectedId);
   const selectedItemPrice = selectedItem ? selectedItem?.price ?? 0 : 0;
@@ -106,19 +102,19 @@ export default function Inventory() {
   return (
     <View style={styles.container}>
       <FlatList
-        style={styles.list}
-        contentContainerStyle={styles.listContentContainer}
-        data={filteredItems}
-        ListEmptyComponent={(<Text>No Inventory items available!</Text>)}
-        renderItem={(item) => (
-          <InventoryItem
-            isSelected={item.item.id === selectedId}
-            key={item.item.id}
-            item={item.item}
-            onSelect={() => onSelect(item.item.id)}
-          />
-        )}
-      />
+          style={styles.list}
+          contentContainerStyle={styles.listContentContainer}
+          data={filteredItems}
+          ListEmptyComponent={(<Text>No Inventory items available!</Text>)}
+          renderItem={(item) => (
+            <InventoryItem
+              isSelected={item.item.id === selectedId}
+              key={item.item.id}
+              item={item.item}
+              onSelect={() => onSelect(item.item.id)}
+            />
+          )}
+        />
 
       {selectedItem ? (
         <InventoryQuantityPicker
