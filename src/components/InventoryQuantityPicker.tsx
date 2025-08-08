@@ -50,10 +50,8 @@ export default function InventoryQuantityPicker({
       fontWeight: 700,
       backgroundColor: Palette.ACCENT_COLOR,
       color: Palette.BUTTON_FOREGROUND_COLOR,
-      paddingTop: 12,
-      paddingLeft: 16,
-      paddingRight: 16,
-      paddingBottom: 12,
+      paddingVertical: 12,
+      paddingHorizontal: 16,
       borderRadius: 4,
     },
     subTotal: {
