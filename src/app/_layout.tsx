@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { RelayEnvironmentProvider } from "react-relay";
 import { Environment, FetchFunction, Network } from "relay-runtime";
 import { UsedInventoryItemsContext } from "../context/UsedInventoryItemsContext";
@@ -34,7 +34,6 @@ export default function RootLayout() {
         },
         usedItemIds: usedItemIds
       }}>
-      <Suspense fallback="Loading...">
         <Stack>
           <Stack.Screen
             name="index"
@@ -49,8 +48,7 @@ export default function RootLayout() {
             }}
           />
         </Stack>
-      </Suspense>
-        </UsedInventoryItemsContext>
+      </UsedInventoryItemsContext>
     </RelayEnvironmentProvider>
   );
 }

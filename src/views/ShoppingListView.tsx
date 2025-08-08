@@ -1,10 +1,10 @@
-import { Text, View } from "react-native";
+import { ActivityIndicator, Text, View, StyleSheet } from "react-native";
 import {
   graphql,
   useQueryLoader,
 } from "react-relay";
 import { ShoppingListViewQuery as ShoppingListViewQueryType } from "./__generated__/ShoppingListViewQuery.graphql";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import ShoppingList from "../components/ShoppingList";
 
 const ShoppingListViewQuery = graphql`
@@ -21,6 +21,12 @@ const ShoppingListViewQuery = graphql`
   }
 `;
 
+const styles = StyleSheet.create({
+  activityIndicator: {
+    flex: 1,
+  },
+});
+
 export default function ShoppingListView() {
   const [queryReference, loadQuery] = useQueryLoader<ShoppingListViewQueryType>(
     ShoppingListViewQuery
@@ -32,19 +38,19 @@ export default function ShoppingListView() {
     });
   }, [loadQuery]);
 
-  if (!queryReference) {
-    return (
-      <View>
-        <Text>Loading shopping items...</Text>
-      </View>
-    );
-  }
-
   return (
-    <ShoppingList
-      queryRef={queryReference}
-      loadQuery={loadQuery}
-      query={ShoppingListViewQuery}
-    />
+    <Suspense fallback={
+        <ActivityIndicator style={styles.activityIndicator}/>
+    }>
+      {queryReference 
+        ? <ShoppingList
+        queryRef={queryReference}
+        loadQuery={loadQuery}
+        query={ShoppingListViewQuery} 
+        /> 
+        : null
+      }
+      
+    </Suspense>
   );
 }
