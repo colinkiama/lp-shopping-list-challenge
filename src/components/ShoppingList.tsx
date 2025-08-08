@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
   },
   listContentContainer: {
     paddingBottom: 20,
-    alignItems: "center",
     gap: 12,
+    flex: 1,
   },
 });
 
