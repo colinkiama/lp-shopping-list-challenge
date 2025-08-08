@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Palette } from "../constants";
 import { currencyFormatter } from "../utils";
 
-interface CatalogueQuantityPickerProps {
+interface InventoryQuantityPickerProps {
   price: number;
   name?: string;
   disabled?: boolean;
@@ -12,12 +12,12 @@ interface CatalogueQuantityPickerProps {
 }
 const pickerItems = Array.from({ length: 21 }, (value, index) => index);
 
-export default function CatalogueQuantityPicker({
+export default function InventoryQuantityPicker({
   name,
   price,
   onAdd,
   disabled = false,
-}: CatalogueQuantityPickerProps) {
+}: InventoryQuantityPickerProps) {
   const [quantity, setQuantity] = useState<number>(0);
   const subtotal = price * quantity;
   const formattedSubtotal = currencyFormatter.format(subtotal);

@@ -3,24 +3,24 @@ import { useContext, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useLazyLoadQuery, useMutation } from "react-relay";
 import { graphql } from "relay-runtime";
-import CatalogueItem from "../../components/CatalogueItem";
-import CatalogueQuantityPicker from "../../components/CatalogueQuantityPicker";
-import { CatalogueQuery as CatalogueQueryType } from "./__generated__/CatalogueQuery.graphql";
+import InventoryItem from "../../components/InventoryItem";
+import InventoryQuantityPicker from "../../components/InventoryQuantityPicker";
+import { InventoryQuery as InventoryQueryType } from "./__generated__/InventoryQuery.graphql";
 import { UsedInventoryItemsContext } from "@/src/context/UsedInventoryItemsContext";
 
-const CatalogueQuery = graphql`
-  query CatalogueQuery {
+const InventoryQuery = graphql`
+  query InventoryQuery {
     availableItems {
       id
       name
       price
-      ...CatalogueItemFragment
+      ...InventoryItemFragment
     }
   }
 `;
 
-const CatalogueAddItemToShoppingListMutation = graphql`
-  mutation CatalogueAddItemToShoppingListMutation(
+const InventoryAddItemToShoppingListMutation = graphql`
+  mutation InventoryAddItemToShoppingListMutation(
     $inventoryItemID: ID!
     $quantity: Int!
   ) {
@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Catalogue() {
-  const data = useLazyLoadQuery<CatalogueQueryType>(CatalogueQuery, {}, {fetchPolicy: 'store-and-network'});
+export default function Inventory() {
+  const data = useLazyLoadQuery<InventoryQueryType>(InventoryQuery, {}, {fetchPolicy: 'store-and-network'});
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [commitMutation, isMutationInFlight] = useMutation(
-    CatalogueAddItemToShoppingListMutation
+    InventoryAddItemToShoppingListMutation
   );
   
   const router = useRouter();
@@ -68,7 +68,7 @@ export default function Catalogue() {
   const availableItems = data.availableItems;
 
   if (!availableItems) {
-    return <Text>No catalogue items available!</Text>;
+    return <Text>No Inventory items available!</Text>;
   }
 
   const filteredItems = availableItems.filter((item) => !usedItemIds.includes(item.id));
@@ -109,9 +109,9 @@ export default function Catalogue() {
         style={styles.list}
         contentContainerStyle={styles.listContentContainer}
         data={filteredItems}
-        ListEmptyComponent={(<Text>No catalogue items available!</Text>)}
+        ListEmptyComponent={(<Text>No Inventory items available!</Text>)}
         renderItem={(item) => (
-          <CatalogueItem
+          <InventoryItem
             isSelected={item.item.id === selectedId}
             key={item.item.id}
             item={item.item}
@@ -121,7 +121,7 @@ export default function Catalogue() {
       />
 
       {selectedItem ? (
-        <CatalogueQuantityPicker
+        <InventoryQuantityPicker
           price={selectedItemPrice}
           name={selectedItem?.name ?? ""}
           onAdd={onAdd}

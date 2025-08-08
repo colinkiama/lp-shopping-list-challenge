@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1245c9d97a0e88683789fa2ed3ce1b7c>>
+ * @generated SignedSource<<8c2824fac94f667945d6814d8c105065>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,18 +10,18 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type CatalogueQuery$variables = Record<PropertyKey, never>;
-export type CatalogueQuery$data = {
+export type InventoryQuery$variables = Record<PropertyKey, never>;
+export type InventoryQuery$data = {
   readonly availableItems: ReadonlyArray<{
     readonly id: string;
     readonly name: string;
     readonly price: number | null | undefined;
-    readonly " $fragmentSpreads": FragmentRefs<"CatalogueItemFragment">;
+    readonly " $fragmentSpreads": FragmentRefs<"InventoryItemFragment">;
   }> | null | undefined;
 };
-export type CatalogueQuery = {
-  response: CatalogueQuery$data;
-  variables: CatalogueQuery$variables;
+export type InventoryQuery = {
+  response: InventoryQuery$data;
+  variables: InventoryQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -51,7 +51,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "CatalogueQuery",
+    "name": "InventoryQuery",
     "selections": [
       {
         "alias": null,
@@ -67,7 +67,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "CatalogueItemFragment"
+            "name": "InventoryItemFragment"
           }
         ],
         "storageKey": null
@@ -80,7 +80,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "CatalogueQuery",
+    "name": "InventoryQuery",
     "selections": [
       {
         "alias": null,
@@ -106,16 +106,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "320708ebc1f60cb718994718099f2441",
+    "cacheID": "aa6fbcaab5610ba49c2786fcc5c88815",
     "id": null,
     "metadata": {},
-    "name": "CatalogueQuery",
+    "name": "InventoryQuery",
     "operationKind": "query",
-    "text": "query CatalogueQuery {\n  availableItems {\n    id\n    name\n    price\n    ...CatalogueItemFragment\n  }\n}\n\nfragment CatalogueItemFragment on InventoryItem {\n  category\n  id\n  name\n  price\n}\n"
+    "text": "query InventoryQuery {\n  availableItems {\n    id\n    name\n    price\n    ...InventoryItemFragment\n  }\n}\n\nfragment InventoryItemFragment on InventoryItem {\n  category\n  id\n  name\n  price\n}\n"
   }
 };
 })();
 
-(node as any).hash = "74acaf7e78993bef4150cce27ed31991";
+(node as any).hash = "bd2d909160b9b9ea05b36c4e8312c976";
 
 export default node;

@@ -43,7 +43,7 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
-            name="Catalogue/index"
+            name="Inventory/index"
             options={{
               title: "Add Item",
             }}

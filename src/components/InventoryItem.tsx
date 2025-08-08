@@ -3,10 +3,10 @@ import { useFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 import { Palette } from "../constants";
 import { currencyFormatter } from "../utils";
-import type { CatalogueItemFragment$key } from "./__generated__/CatalogueItemFragment.graphql";
+import type { InventoryItemFragment$key } from "./__generated__/InventoryItemFragment.graphql";
 
-const CatalogueItemFragment = graphql`
-  fragment CatalogueItemFragment on InventoryItem {
+const InventoryItemFragment = graphql`
+  fragment InventoryItemFragment on InventoryItem {
     category
     id
     name
@@ -14,8 +14,8 @@ const CatalogueItemFragment = graphql`
   }
 `;
 
-interface CatalogueItemProps {
-  item: CatalogueItemFragment$key;
+interface InventoryItemProps {
+  item: InventoryItemFragment$key;
   onSelect: (nextId: string) => void;
   isSelected?: boolean;
 }
@@ -41,12 +41,12 @@ const styles = StyleSheet.create({
 });
 
 
-export default function CatalogueItem({
+export default function InventoryItem({
   item,
   onSelect,
   isSelected = false,
-}: CatalogueItemProps) {
-  const data = useFragment(CatalogueItemFragment, item);
+}: InventoryItemProps) {
+  const data = useFragment(InventoryItemFragment, item);
 
   const formattedPrice = currencyFormatter.format(data.price ?? 0);
   const containerStyles = {

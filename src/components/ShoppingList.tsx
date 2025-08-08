@@ -153,7 +153,7 @@ export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListP
           Total Price: {formattedTotalPrice}
         </Text>
         <Pressable>
-          <Link style={styles.addButton} href="/Catalogue">
+          <Link style={styles.addButton} href="/Inventory">
             Add
           </Link>
         </Pressable>
