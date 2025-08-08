@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, View, StyleSheet } from "react-native";
+import { ActivityIndicator, StyleSheet } from "react-native";
 import {
   graphql,
   useQueryLoader,

@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
-import { Suspense, useContext, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
+import { useContext, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useLazyLoadQuery, useMutation } from "react-relay";
 import { graphql } from "relay-runtime";
 import InventoryItem from "../../components/InventoryItem";
