@@ -28,20 +28,20 @@ export default function InventoryQuantityPicker({
       backgroundColor: Palette.BRIM_BACKGROUND_COLOR,
       borderTopColor: Palette.BRIM_BORDER_COLOR,
       borderTopWidth: 1,
-      justifyContent: 'flex-end'
+      justifyContent: "flex-end",
     },
     top: {
-      marginBottom: 4
+      marginBottom: 4,
     },
     bottom: {
       flexDirection: "row",
       justifyContent: "space-between",
-      alignItems: 'flex-end'
+      alignItems: "flex-end",
     },
     name: {
       fontWeight: 700,
       fontSize: 20,
-      marginBottom: 4
+      marginBottom: 4,
     },
     picker: {
       maxWidth: 50,
@@ -49,7 +49,7 @@ export default function InventoryQuantityPicker({
     addButton: {
       fontWeight: 700,
       backgroundColor: Palette.ACCENT_COLOR,
-      color: Palette.BUTTON_FOREGROUND_COLOR,  
+      color: Palette.BUTTON_FOREGROUND_COLOR,
       paddingTop: 12,
       paddingLeft: 16,
       paddingRight: 16,
@@ -57,8 +57,8 @@ export default function InventoryQuantityPicker({
       borderRadius: 4,
     },
     subTotal: {
-      fontSize: 16
-    }
+      fontSize: 16,
+    },
   });
 
   return (
@@ -83,11 +83,7 @@ export default function InventoryQuantityPicker({
       </View>
       <View style={styles.bottom}>
         <Text style={styles.subTotal}>Subtotal: {formattedSubtotal}</Text>
-        <Pressable
-          
-          disabled={disabled}
-          onPress={() => onAdd(quantity)}
-        >
+        <Pressable disabled={disabled} onPress={() => onAdd(quantity)}>
           <Text style={styles.addButton}>Add</Text>
         </Pressable>
       </View>

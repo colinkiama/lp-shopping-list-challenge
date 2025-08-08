@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   container: {
     minWidth: 300,
-    padding: 4
+    padding: 4,
   },
   containerSelected: {
     borderColor: Palette.ACCENT_COLOR,
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
 });
-
 
 export default function InventoryItem({
   item,

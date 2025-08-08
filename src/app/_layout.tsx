@@ -22,18 +22,19 @@ const environment = new Environment({
   network: Network.create(fetchGraphQL),
 });
 
-
 export default function RootLayout() {
   const [usedItemIds, setUsedItemIds] = useState<string[]>([]);
 
   return (
     <RelayEnvironmentProvider environment={environment}>
-      <UsedInventoryItemsContext value={{
-        updateUsedItemIds: (nextUsedItemIds) => {
-          setUsedItemIds(nextUsedItemIds);
-        },
-        usedItemIds: usedItemIds
-      }}>
+      <UsedInventoryItemsContext
+        value={{
+          updateUsedItemIds: (nextUsedItemIds) => {
+            setUsedItemIds(nextUsedItemIds);
+          },
+          usedItemIds: usedItemIds,
+        }}
+      >
         <Stack>
           <Stack.Screen
             name="index"

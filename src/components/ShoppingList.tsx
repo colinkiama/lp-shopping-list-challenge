@@ -1,12 +1,25 @@
-import { Link } from "expo-router";
+import { useContext, useEffect } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import { graphql, GraphQLTaggedNode, PreloadedQuery, useMutation, usePreloadedQuery, UseQueryLoaderLoadQueryOptions, useSubscribeToInvalidationState } from "react-relay";
+import { Link } from "expo-router";
+import {
+  graphql,
+  GraphQLTaggedNode,
+  PreloadedQuery,
+  useMutation,
+  usePreloadedQuery,
+  UseQueryLoaderLoadQueryOptions,
+  useSubscribeToInvalidationState,
+} from "react-relay";
+
+import { UsedInventoryItemsContext } from "../context/UsedInventoryItemsContext";
 import ShoppingListItem from "../components/ShoppingListItem";
 import { Palette } from "../constants";
 import { currencyFormatter } from "../utils";
-import { ShoppingListViewQuery$variables, ShoppingListViewQuery as ShoppingListViewQueryType } from "../views/__generated__/ShoppingListViewQuery.graphql";
-import { useContext, useEffect } from "react";
-import { UsedInventoryItemsContext } from "../context/UsedInventoryItemsContext";
+import {
+  ShoppingListViewQuery$variables,
+  ShoppingListViewQuery as ShoppingListViewQueryType,
+} from "../views/__generated__/ShoppingListViewQuery.graphql";
+
 
 const ShoppingListDeleteItemFromShoppingListMutation = graphql`
   mutation ShoppingListDeleteItemFromShoppingListMutation(
@@ -38,7 +51,7 @@ const ShoppingListUpdateItemFromShoppingListMutation = graphql`
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   top: {
     paddingTop: 12,
@@ -69,15 +82,26 @@ const styles = StyleSheet.create({
 });
 
 interface ShoppingListProps {
-    queryRef: PreloadedQuery<ShoppingListViewQueryType>,
-    loadQuery: (variables: ShoppingListViewQuery$variables, options?: UseQueryLoaderLoadQueryOptions) => void,
-    query: GraphQLTaggedNode
-};
+  queryRef: PreloadedQuery<ShoppingListViewQueryType>;
+  loadQuery: (
+    variables: ShoppingListViewQuery$variables,
+    options?: UseQueryLoaderLoadQueryOptions
+  ) => void;
+  query: GraphQLTaggedNode;
+}
 
-export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListProps) {
-  const shoppingListQueryRef = queryRef as PreloadedQuery<ShoppingListViewQueryType>
+export default function ShoppingList({
+  queryRef,
+  loadQuery,
+  query,
+}: ShoppingListProps) {
+  const shoppingListQueryRef =
+    queryRef as PreloadedQuery<ShoppingListViewQueryType>;
 
-  const data = usePreloadedQuery<ShoppingListViewQueryType>(query, shoppingListQueryRef);
+  const data = usePreloadedQuery<ShoppingListViewQueryType>(
+    query,
+    shoppingListQueryRef
+  );
 
   const [commitUpdateMutation, isUpdateMutationInFlight] = useMutation(
     ShoppingListUpdateItemFromShoppingListMutation
@@ -88,22 +112,32 @@ export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListP
   );
 
   const { shoppingItems } = data;
-  const { updateUsedItemIds, usedItemIds } = useContext(UsedInventoryItemsContext);
-  
-  
-  useSubscribeToInvalidationState(shoppingItems?.map(item => item.id) ?? [], () => {
-    loadQuery({}, {
-      fetchPolicy: 'store-and-network',
-    });
-  });
-  
+  const { updateUsedItemIds, usedItemIds } = useContext(
+    UsedInventoryItemsContext
+  );
+
+  useSubscribeToInvalidationState(
+    shoppingItems?.map((item) => item.id) ?? [],
+    () => {
+      loadQuery(
+        {},
+        {
+          fetchPolicy: "store-and-network",
+        }
+      );
+    }
+  );
+
   useEffect(() => {
-    const inventoryItemIds = shoppingItems?.map(item => item.inventoryItem.id) ?? [];
-    const areUsedIdsUpToDate = inventoryItemIds.length === usedItemIds.length && inventoryItemIds.every((item, index) => item === usedItemIds[index]);
+    const inventoryItemIds =
+      shoppingItems?.map((item) => item.inventoryItem.id) ?? [];
+    const areUsedIdsUpToDate =
+      inventoryItemIds.length === usedItemIds.length &&
+      inventoryItemIds.every((item, index) => item === usedItemIds[index]);
     if (!areUsedIdsUpToDate) {
       updateUsedItemIds(inventoryItemIds);
     }
-  }, [shoppingItems, updateUsedItemIds, usedItemIds])
+  }, [shoppingItems, updateUsedItemIds, usedItemIds]);
 
   if (!shoppingItems) {
     return (
@@ -112,7 +146,6 @@ export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListP
       </View>
     );
   }
-
 
   const totalPrice: number = shoppingItems.reduce(
     (lastValue, current) => lastValue + (current.totalPrice ?? 0),
@@ -131,7 +164,7 @@ export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListP
         if (item) {
           item.invalidateRecord();
         }
-      }
+      },
     });
   }
 
@@ -140,14 +173,12 @@ export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListP
       variables: {
         shoppingItemID: id,
         quantity: quantity,
-      }
+      },
     });
   }
 
   return (
-    <View
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.totalPrice}>
           Total Price: {formattedTotalPrice}
@@ -162,7 +193,9 @@ export default function ShoppingList({queryRef, loadQuery, query}: ShoppingListP
       <FlatList
         data={shoppingItems}
         contentContainerStyle={styles.listContentContainer}
-        ListEmptyComponent={<Text>Press the {"Add"} button to add an item to the list</Text>}
+        ListEmptyComponent={
+          <Text>Press the {"Add"} button to add an item to the list</Text>
+        }
         renderItem={({ item: shoppingItem }) => (
           <ShoppingListItem
             key={shoppingItem.id}
