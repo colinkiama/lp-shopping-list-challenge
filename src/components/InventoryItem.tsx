@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     wordWrap: "wrap",
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   price: {
     fontWeight: 700,
   },
   container: {
-    flexDirection: 'row',
-    justifyContent: 'center'
+    flexDirection: "row",
+    justifyContent: "center",
   },
   subContainer: {
     flex: 1,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Palette.LIST_ITEM_BORDER_COLOR
+    borderColor: Palette.LIST_ITEM_BORDER_COLOR,
   },
   containerSelected: {
     borderColor: Palette.ACCENT_COLOR,
@@ -65,9 +65,9 @@ export default function InventoryItem({
   return (
     <View style={styles.container}>
       <Pressable style={subContainerStyle} onPress={() => onSelect(data.id)}>
-          <Text style={styles.name}>{data.name}</Text>
-          <Text style={styles.price}>{formattedPrice}</Text>
-          <Text>{data.category}</Text>
+        <Text style={styles.name}>{data.name}</Text>
+        <Text style={styles.price}>{formattedPrice}</Text>
+        <Text>{data.category}</Text>
       </Pressable>
     </View>
   );

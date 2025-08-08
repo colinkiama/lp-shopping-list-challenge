@@ -28,8 +28,8 @@ interface ShoppingListItemProps {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'center'
+    flexDirection: "row",
+    justifyContent: "center",
   },
   subContainer: {
     flex: 1,
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Palette.LIST_ITEM_BORDER_COLOR
+    borderColor: Palette.LIST_ITEM_BORDER_COLOR,
   },
   top: { flex: 1, flexDirection: "row" },
   bottom: {
@@ -104,7 +104,10 @@ export default function ShoppingListItem({
         </View>
         <View style={styles.bottom}>
           <Text>{formattedPrice}</Text>
-          <Pressable disabled={deleteButtonIsDisabled} onPress={() => onDelete()}>
+          <Pressable
+            disabled={deleteButtonIsDisabled}
+            onPress={() => onDelete()}
+          >
             <Text style={styles.deleteButton}>Delete</Text>
           </Pressable>
         </View>
