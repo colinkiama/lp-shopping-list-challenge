@@ -6,7 +6,8 @@ import { graphql } from "relay-runtime";
 import InventoryItem from "../../components/InventoryItem";
 import InventoryQuantityPicker from "../../components/InventoryQuantityPicker";
 import { InventoryQuery as InventoryQueryType } from "./__generated__/InventoryQuery.graphql";
-import { UsedInventoryItemsContext } from "@/src/context/UsedInventoryItemsContext";
+import { UsedInventoryItemsContext } from "../../context/UsedInventoryItemsContext";
+import { FontFamily } from "../../constants";
 
 const InventoryQuery = graphql`
   query InventoryQuery {
@@ -38,22 +39,6 @@ const InventoryAddItemToShoppingListMutation = graphql`
     }
   }
 `;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-  },
-  list: {
-    flex: 1,
-  },
-  listContentContainer: {
-    paddingTop: 12,
-    paddingBottom: 20,
-    paddingHorizontal: 4,
-    gap: 12,
-  },
-});
 
 export default function Inventory() {
   const data = useLazyLoadQuery<InventoryQueryType>(
@@ -110,7 +95,13 @@ export default function Inventory() {
         style={styles.list}
         contentContainerStyle={styles.listContentContainer}
         data={filteredItems}
-        ListEmptyComponent={<Text>No Inventory items available!</Text>}
+        ListEmptyComponent={
+          <View style={styles.emptyContentContainer}>
+            <Text style={styles.emptyContentText}>
+              There are no items available to add
+            </Text>
+          </View>
+        }
         renderItem={(item) => (
           <InventoryItem
             isSelected={item.item.id === selectedId}
@@ -132,3 +123,30 @@ export default function Inventory() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+  },
+  list: {
+    flex: 1,
+  },
+  listContentContainer: {
+    paddingTop: 12,
+    paddingBottom: 240,
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  emptyContentContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyContentText: {
+    textAlign: "center",
+    color: "#595959",
+    fontSize: 16,
+    fontFamily: FontFamily.Regular,
+  },
+});

@@ -1,6 +1,5 @@
 import { useContext, useEffect } from "react";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import { Link } from "expo-router";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import {
   graphql,
   GraphQLTaggedNode,
@@ -13,7 +12,7 @@ import {
 
 import { UsedInventoryItemsContext } from "../context/UsedInventoryItemsContext";
 import ShoppingListItem from "../components/ShoppingListItem";
-import { Palette } from "../constants";
+import { FontFamily } from "../constants";
 import { currencyFormatter } from "../utils";
 import {
   ShoppingListViewQuery$variables,
@@ -47,36 +46,6 @@ const ShoppingListUpdateItemFromShoppingListMutation = graphql`
     }
   }
 `;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  top: {
-    padding: 12,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  totalPrice: {
-    fontWeight: 700,
-    fontSize: 20,
-  },
-  addButton: {
-    fontWeight: 700,
-    backgroundColor: Palette.ACCENT_COLOR,
-    color: Palette.BUTTON_FOREGROUND_COLOR,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 4,
-  },
-  listContentContainer: {
-    paddingBottom: 20,
-    paddingHorizontal: 4,
-    gap: 12,
-    flex: 1,
-  },
-});
 
 interface ShoppingListProps {
   queryRef: PreloadedQuery<ShoppingListViewQueryType>;
@@ -177,21 +146,18 @@ export default function ShoppingList({
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.totalPrice}>
-          Total Price: {formattedTotalPrice}
-        </Text>
-        <Pressable>
-          <Link style={styles.addButton} href="/Inventory">
-            Add
-          </Link>
-        </Pressable>
+        <Text style={styles.totalPriceLabel}>Total Price</Text>
+        <Text style={styles.totalPriceValue}>{formattedTotalPrice}</Text>
       </View>
 
       <FlatList
         data={shoppingItems}
         contentContainerStyle={styles.listContentContainer}
         ListEmptyComponent={
-          <Text>Press the {"Add"} button to add an item to the list</Text>
+          <View style={styles.emptyContentContainer}>
+            <Text style={styles.emptyContentText}>Your shopping list is empty</Text>
+            <Text style={styles.emptyContentText}>Press the &lsquo;+&rsquo; button to add an item to the list</Text>
+          </View>
         }
         renderItem={({ item: shoppingItem }) => (
           <ShoppingListItem
@@ -207,3 +173,41 @@ export default function ShoppingList({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  top: {
+    paddingTop: 4,
+    paddingBottom: 20,
+    paddingHorizontal: 16,
+  },
+  totalPriceLabel: {
+    fontFamily: FontFamily.Regular,
+    fontSize: 16,
+    color: "#595959",
+    letterSpacing: -1
+  },
+  totalPriceValue: {
+    fontFamily: FontFamily.Bold,
+    fontSize: 32,
+    letterSpacing: -1,
+  },
+  listContentContainer: {
+    paddingBottom: 40,
+    gap: 12,
+    paddingHorizontal: 16,
+  },
+  emptyContentContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyContentText: {
+    textAlign: "center",
+    color: "#595959",
+    fontSize: 16,
+    fontFamily: FontFamily.Regular
+  },
+});

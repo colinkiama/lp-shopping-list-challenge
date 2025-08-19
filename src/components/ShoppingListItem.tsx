@@ -4,7 +4,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { graphql, useFragment } from "react-relay";
 import { currencyFormatter } from "../utils";
 import { ShoppingListItemFragment$key } from "./__generated__/ShoppingListItemFragment.graphql";
-import { Palette } from "../constants";
+import { FontFamily, Palette } from "../constants";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 const ShoppingListItemFragment = graphql`
   fragment ShoppingListItemFragment on ShoppingItem {
@@ -26,39 +27,6 @@ interface ShoppingListItemProps {
   pickerIsDisabled: boolean;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  subContainer: {
-    flex: 1,
-    maxWidth: 400,
-    backgroundColor: Palette.LIST_ITEM_BACKGROUND_COLOR,
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: Palette.LIST_ITEM_BORDER_COLOR,
-  },
-  top: { flex: 1, flexDirection: "row" },
-  bottom: {
-    flexDirection: "row",
-    flex: 1,
-    justifyContent: "space-between",
-    marginTop: 4,
-  },
-  nameContainer: {
-    flex: 1,
-  },
-  name: {
-    fontSize: 20,
-    wordWrap: "wrap",
-  },
-  deleteButton: {
-    textDecorationLine: "underline",
-  },
-});
-
 const pickerItems = Array.from({ length: 20 }, (_value, index) => index + 1);
 
 export default function ShoppingListItem({
@@ -73,6 +41,7 @@ export default function ShoppingListItem({
   const [selectedQuantity, setSelectedQuantity] = useState(quantity ?? 1);
   const formattedPrice = currencyFormatter.format(totalPrice ?? 0);
   const name = inventoryItem.name;
+  const [isHoveringDeleteButton, setIsHoveringDeleteButton] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -83,35 +52,78 @@ export default function ShoppingListItem({
           </View>
 
           <View>
-            <Picker
-              enabled={!pickerIsDisabled}
-              selectedValue={selectedQuantity}
-              onValueChange={(_itemValue, itemIndex) => {
-                const nextSelectedQuantity = pickerItems[itemIndex];
-                setSelectedQuantity(pickerItems[itemIndex]);
-                onUpdate(nextSelectedQuantity);
-              }}
-            >
-              {pickerItems.map((pickerValue) => (
-                <Picker.Item
-                  key={pickerValue}
-                  label={`${pickerValue}`}
-                  value={pickerValue}
-                />
-              ))}
-            </Picker>
+            <Text style={styles.price}>{formattedPrice}</Text>
           </View>
         </View>
         <View style={styles.bottom}>
-          <Text>{formattedPrice}</Text>
+          <Picker
+            enabled={!pickerIsDisabled}
+            selectedValue={selectedQuantity}
+            onValueChange={(_itemValue, itemIndex) => {
+              const nextSelectedQuantity = pickerItems[itemIndex];
+              setSelectedQuantity(pickerItems[itemIndex]);
+              onUpdate(nextSelectedQuantity);
+            }}
+            style={styles.picker}
+          >
+            {pickerItems.map((pickerValue) => (
+              <Picker.Item
+                key={pickerValue}
+                label={`${pickerValue}`}
+                value={pickerValue}
+              />
+            ))}
+          </Picker>
           <Pressable
             disabled={deleteButtonIsDisabled}
             onPress={() => onDelete()}
+            onHoverIn={() => setIsHoveringDeleteButton(true)}
+            onHoverOut={() => setIsHoveringDeleteButton(false)}
           >
-            <Text style={styles.deleteButton}>Delete</Text>
+            <FontAwesome6 name="trash" size={24} color={isHoveringDeleteButton ? "red" : "black"} />
           </Pressable>
         </View>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  subContainer: {
+    flex: 1,
+    maxWidth: 400,
+    backgroundColor: Palette.BACKGROUND_COLOR,
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Palette.BORDER_COLOR,
+  },
+  top: { flex: 1, flexDirection: "row" },
+  bottom: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "space-between",
+    marginTop: 16,
+  },
+  nameContainer: {
+    flex: 1,
+  },
+  name: {
+    fontSize: 24,
+    wordWrap: "wrap",
+    fontFamily: FontFamily.Medium,
+    letterSpacing: -2,
+  },
+  price: {
+    fontSize: 28,
+    fontFamily: FontFamily.SemiBold,
+    letterSpacing: -2,
+  },
+  picker: {
+    width: 60,
+  },
+});
